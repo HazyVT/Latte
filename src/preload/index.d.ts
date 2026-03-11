@@ -3,7 +3,8 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 declare global {
   interface Window {
     electronAPI: {
-      readConfigDirectory: () => Promise<any>
+      readConfigDirectory: () => Promise<any>,
+      onGbaRoms(callback: (value: string[]) => void): void;
     }
     electron: ElectronAPI
     api: unknown

@@ -12,7 +12,9 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('electronAPI', {
-      readConfigDirectory: () => ipcRenderer.invoke('cmd:readConfigDirectory')
+      readConfigDirectory: () => ipcRenderer.invoke('cmd:readConfigDirectory'),
+      onGbaRoms: (callback) => ipcRenderer.on('gba-roms', (_event, value) => callback(value)),
+      loadGbaRom: (path: string) => ipcRenderer.on('load-gba-rom', path)
     })
   } catch (error) {
     console.error(error)

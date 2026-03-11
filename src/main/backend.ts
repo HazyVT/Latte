@@ -2,13 +2,39 @@ import { ipcMain } from "electron";
 import * as fs from 'fs';
 import { join } from 'path';
 import { homedir } from 'os';
+import { searchFolderForRoms, loadRom } from './roms'
+import { window } from './window'
+
+interface RomLocation {
+    name: string
+    ext: string
+    location: string
+}
+
+interface Config {
+    background: string,
+    locations: RomLocation[]
+}
 
 function readConfigFile()  {
     // No need for checking if the file exists because we already do that below
     
     const configFileLocation = join(homedir(), ".config/latte/latte.json");
     const loadedConfig = fs.readFileSync(configFileLocation, 'utf-8');
-    const config = JSON.parse(loadedConfig);
+    const config: Config = JSON.parse(loadedConfig);
+    console.log(config);
+    
+    // Once this is complete, scan each of the rom folders for roms
+    // This location is set inside the config
+    config.locations.forEach((directory) => {
+        const roms = searchFolderForRoms(directory.location);
+        if (roms != null) {
+            window.webContents.send('gba-roms', roms);
+        } else {
+            console.log("Loading roms error");
+        }
+    })
+        
     return config;
     
 }
@@ -28,6 +54,8 @@ function readConfigDirectory(): any {
         console.log("Config location created at " + baseConfigLocation);
     }
 
+    console.log("Config location exists")
+
     
     // Check if the config file exists in the config location
     // If the config file does not exist then load a default config
@@ -39,7 +67,9 @@ function readConfigDirectory(): any {
             "background": "",
             "locations": [
                 {
-                    "gba": ""
+                    "name": "gameboy advanced",
+                    "ext": "gba",
+                    "location": ""
                 }
             ]
         };
@@ -47,12 +77,13 @@ function readConfigDirectory(): any {
         fs.writeFileSync(join(baseConfigLocation, "latte.json"), JSON.stringify(defaultConfig, null, 4));
         console.log("Config fiel creaetd at " + join(baseConfigLocation, "latte.json").toString());
     }
+
     
     return readConfigFile();
 }
 
 export function setIpcFuncs() {
-      ipcMain.on('ping', () => console.log('pong'));
-      ipcMain.handle('cmd:readConfigDirectory', readConfigDirectory);
-      
+    ipcMain.on('ping', () => console.log('pong'));
+    ipcMain.handle('cmd:readConfigDirectory', readConfigDirectory);
+    ipcMain.on('cmd:loadRom', () => loadRom())        
 }
