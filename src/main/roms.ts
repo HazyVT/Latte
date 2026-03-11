@@ -8,16 +8,14 @@ export function searchFolderForRoms(dirPath: string): string[] | null {
 
     const filesAbsPath: string[] = [];
     const files = fs.readdirSync(dirPath, { recursive: true });
-    console.log(files);
     files.forEach((file) => {
         const path = `${dirPath}/${file}`;
-        console.log(path);
         filesAbsPath.push(path);
     })
 
     return filesAbsPath;
 }
 
-export function loadRom(): void {
-    
+export function loadRom(path: string): void {
+    console.log(path);
 }

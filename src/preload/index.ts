@@ -7,6 +7,10 @@ const api = {}
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
+
+// readConfigDirectory: renderer -> main (two-way)
+// onGbaRoms: main -> renderer (one-way)
+// loadGbaRom: renderer -> main (one-way)
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
@@ -14,7 +18,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electronAPI', {
       readConfigDirectory: () => ipcRenderer.invoke('cmd:readConfigDirectory'),
       onGbaRoms: (callback) => ipcRenderer.on('gba-roms', (_event, value) => callback(value)),
-      loadGbaRom: (path: string) => ipcRenderer.on('load-gba-rom', path)
+      loadGbaRom: (path: string) => ipcRenderer.invoke('cmd:loadRom', path)
     })
   } catch (error) {
     console.error(error)

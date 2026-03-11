@@ -22,7 +22,6 @@ function readConfigFile()  {
     const configFileLocation = join(homedir(), ".config/latte/latte.json");
     const loadedConfig = fs.readFileSync(configFileLocation, 'utf-8');
     const config: Config = JSON.parse(loadedConfig);
-    console.log(config);
     
     // Once this is complete, scan each of the rom folders for roms
     // This location is set inside the config
@@ -75,7 +74,7 @@ function readConfigDirectory(): any {
         };
     
         fs.writeFileSync(join(baseConfigLocation, "latte.json"), JSON.stringify(defaultConfig, null, 4));
-        console.log("Config fiel creaetd at " + join(baseConfigLocation, "latte.json").toString());
+        console.log("Config file created at " + join(baseConfigLocation, "latte.json").toString());
     }
 
     
@@ -85,5 +84,5 @@ function readConfigDirectory(): any {
 export function setIpcFuncs() {
     ipcMain.on('ping', () => console.log('pong'));
     ipcMain.handle('cmd:readConfigDirectory', readConfigDirectory);
-    ipcMain.on('cmd:loadRom', () => loadRom())        
+    ipcMain.handle('cmd:loadRom', (_event, path: string ) => loadRom(path));   
 }
