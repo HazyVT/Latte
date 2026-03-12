@@ -11,12 +11,12 @@ export function createWindow() {
     const { width, height } = primaryDisplay.workAreaSize
     
       window = new BrowserWindow({
-            width: width,
-            height: height,
+            width: 1280,
+            height: 720,
             show: false,
-            autoHideMenuBar: true,
+            autoHideMenuBar: false,
             resizable: false,
-            fullscreen: true,
+            fullscreen: false,
             ...(process.platform === 'linux' ? { icon } : {}),
             webPreferences: {
                   preload: join(__dirname, '../preload/index.js'),

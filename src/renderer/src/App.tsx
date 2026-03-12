@@ -16,6 +16,11 @@ function App(): React.JSX.Element {
         window.electronAPI.onGbaRoms((value) => {
             setRoms(value);
         })
+        
+        window.addEventListener('gamepadconnected', (e) => {
+            console.log("Gamepad connected");
+            console.log(e);
+        })
             
         getFiles();
     }, [])
