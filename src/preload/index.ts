@@ -18,6 +18,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electronAPI', {
       readConfigDirectory: () => ipcRenderer.invoke('cmd:readConfigDirectory'),
       onGbaRoms: (callback) => ipcRenderer.on('gba-roms', (_event, value) => callback(value)),
+      onControllerInput: (callback) => ipcRenderer.on('mocha:command', (_event, value) => callback(value)),
       loadGbaRom: (path: string) => ipcRenderer.invoke('cmd:loadRom', path)
     })
   } catch (error) {

@@ -17,9 +17,8 @@ function App(): React.JSX.Element {
             setRoms(value);
         })
         
-        window.addEventListener('gamepadconnected', (e) => {
-            console.log("Gamepad connected");
-            console.log(e);
+        window.electronAPI.onControllerInput((command) => {
+            console.log(command);
         })
             
         getFiles();

@@ -5,7 +5,8 @@ declare global {
     electronAPI: {
       readConfigDirectory: () => Promise<any>,
       onGbaRoms(callback: (value: string[]) => void): void,
-      loadGbaRom(callback: (value: string) => void) : void
+      onControllerInput(callback: (value: string) => void): void,
+      loadGbaRom(value: string) : void
     }
     electron: ElectronAPI
     api: unknown

@@ -1,9 +1,13 @@
-import { BrowserWindow, shell, screen } from "electron";
+import { BrowserWindow, shell, screen, app } from "electron";
 import icon from '../../resources/icon.png?asset'
 import { join } from "path";
 import { is } from "@electron-toolkit/utils";
+import { spawn } from 'child_process'
 
 export let window: BrowserWindow;
+
+// Variables to track controller support
+let isWindowFocused = false;
 
 export function createWindow() {
     
@@ -28,6 +32,7 @@ export function createWindow() {
             window.show();
       })
 
+
       window.webContents.setWindowOpenHandler((details) => {
             shell.openExternal(details.url);
             return { action: 'deny'}
@@ -38,4 +43,24 @@ export function createWindow() {
       } else {
             window.loadFile(join(__dirname, '../renderer/index.html'))
       }
+
+      // Spawn mocha to get controller inputs
+      const mochaFile = app.isPackaged ? join(process.resourcesPath, 'mocha') : './mocha/mocha'
+      const mocha = spawn(mochaFile);
+      
+      mocha.stdout.on('data', (data) => {
+          //console.log(data.toString());
+          if (isWindowFocused) {
+            window.webContents.send('mocha:command', data.toString());
+          }
+      })
+
+      window.on('focus', () => {
+          isWindowFocused = true;
+      })
+
+      window.on('blur', () => {
+          isWindowFocused = false;
+      })
+
 }
