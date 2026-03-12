@@ -14,7 +14,10 @@ interface RomLocation {
 interface Config {
     background: string,
     locations: RomLocation[]
+    retroarch_location: string
 }
+
+export let conf: Config;
 
 function readConfigFile()  {
     // No need for checking if the file exists because we already do that below
@@ -22,6 +25,7 @@ function readConfigFile()  {
     const configFileLocation = join(homedir(), ".config/latte/latte.json");
     const loadedConfig = fs.readFileSync(configFileLocation, 'utf-8');
     const config: Config = JSON.parse(loadedConfig);
+    conf = config;
     
     // Once this is complete, scan each of the rom folders for roms
     // This location is set inside the config
@@ -70,7 +74,8 @@ function readConfigDirectory(): any {
                     "ext": "gba",
                     "location": ""
                 }
-            ]
+            ],
+            "retroarch_location": ""
         };
     
         fs.writeFileSync(join(baseConfigLocation, "latte.json"), JSON.stringify(defaultConfig, null, 4));

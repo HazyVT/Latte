@@ -1,4 +1,4 @@
-import { BrowserWindow, shell } from "electron";
+import { BrowserWindow, shell, screen } from "electron";
 import icon from '../../resources/icon.png?asset'
 import { join } from "path";
 import { is } from "@electron-toolkit/utils";
@@ -6,12 +6,17 @@ import { is } from "@electron-toolkit/utils";
 export let window: BrowserWindow;
 
 export function createWindow() {
+    
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width, height } = primaryDisplay.workAreaSize
+    
       window = new BrowserWindow({
-            width: 1280,
-            height: 800,
+            width: width,
+            height: height,
             show: false,
-            autoHideMenuBar: false,
+            autoHideMenuBar: true,
             resizable: false,
+            fullscreen: true,
             ...(process.platform === 'linux' ? { icon } : {}),
             webPreferences: {
                   preload: join(__dirname, '../preload/index.js'),
