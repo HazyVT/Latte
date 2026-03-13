@@ -3,6 +3,16 @@ import { exec } from 'child_process'
 import { conf } from './backend'
 import { join } from 'path'
 
+function getFileExtension(filename: string): string {
+  const lastDotIndex = filename.lastIndexOf(".");
+
+  if (lastDotIndex === -1 || lastDotIndex === 0) {
+    return "";
+  }
+
+  return filename.slice(lastDotIndex + 1);
+}
+
 export function searchFolderForRoms(dirPath: string): string[] | null {
     if (!fs.existsSync(dirPath)) {
         console.log("Rom directory does not exist");
@@ -12,8 +22,10 @@ export function searchFolderForRoms(dirPath: string): string[] | null {
     const filesAbsPath: string[] = [];
     const files = fs.readdirSync(dirPath, { recursive: true });
     files.forEach((file) => {
-        const path = `${dirPath}/${file}`;
-        filesAbsPath.push(path);
+        if (getFileExtension(file) == "gba") {
+            const path = `${dirPath}/${file}`;
+            filesAbsPath.push(path);        
+        }
     })
 
     return filesAbsPath;

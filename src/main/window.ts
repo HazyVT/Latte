@@ -16,7 +16,7 @@ export function createWindow() {
     
       window = new BrowserWindow({
             width: 1280,
-            height: 720,
+            height: 800,
             show: false,
             autoHideMenuBar: false,
             resizable: false,
@@ -61,6 +61,13 @@ export function createWindow() {
 
       window.on('blur', () => {
           isWindowFocused = false;
+      })
+
+      window.on('close', () => {
+          if (process.platform !== "darwin") {
+              const dead = mocha.kill();
+              console.log(dead);
+          }
       })
 
 }

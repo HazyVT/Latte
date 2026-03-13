@@ -25,6 +25,9 @@ int main() {
     
     // Check for connected gamepads on start
     SDL_GameController *controller = findGameController();
+    if (controller != nullptr) {
+        SDL_Log("Controller online");
+    }
         
     
     while (running) {
@@ -35,7 +38,7 @@ int main() {
                     break;
                 case SDL_CONTROLLERDEVICEADDED:
                     // Controller gets plugged in as the program is running
-                    if (controller != nullptr) {
+                    if (controller == nullptr) {
                         controller = SDL_GameControllerOpen(event.cdevice.which);
                         SDL_Log("Controller added");
                     }
@@ -70,12 +73,13 @@ int main() {
                                 break;
                             case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                                 std::cout << "DOWN" << std::flush;
+                                break;
                                 
                         }
                     }
                     break;
             }
-        }    
+        }
     }
     
     return 1;
