@@ -15,10 +15,10 @@ export function createWindow() {
     const { width, height } = primaryDisplay.workAreaSize
     
       window = new BrowserWindow({
-            width: 1280,
-            height: 800,
+            width: width,
+            height: height,
             show: false,
-            autoHideMenuBar: false,
+            autoHideMenuBar: true,
             resizable: false,
             fullscreen: false,
             ...(process.platform === 'linux' ? { icon } : {}),
@@ -51,7 +51,12 @@ export function createWindow() {
       mocha.stdout.on('data', (data) => {
           //console.log(data.toString());
           if (isWindowFocused) {
-            window.webContents.send('mocha:command', data.toString());
+              if (data.toString() != "START") {
+                  window.webContents.send('mocha:command', data.toString());
+              } else {
+                  // DEBUG CLOSE BUTTON FOR NOW
+                  app.quit()
+              }
           }
       })
 

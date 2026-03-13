@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { FaCaretRight } from "react-icons/fa";
 
 type ControllerCommand = "RIGHT" | "DOWN" | "LEFT" | "UP" | "A" | "B"
 
@@ -59,7 +60,10 @@ function App(): React.JSX.Element {
   return (
     <>
         {roms.map((value, index) => {
-            return <a key={index} style={{color: hovered == index ? "lightblue" : "white"}}>{value}</a>
+            return <div style={{display: 'flex', alignItems:'center', textAlign: 'left'}}>
+                <FaCaretRight style={{opacity: hovered == index ? 1 : 0}}/>
+                <a key={index} style={{color: hovered == index ? "lightblue" : "white"}}>{value}</a>
+            </div>
         })}
     </>
   )

@@ -74,6 +74,9 @@ int main() {
                             case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
                                 std::cout << "DOWN" << std::flush;
                                 break;
+                            case SDL_CONTROLLER_BUTTON_START:
+                                std::cout << "START" << std::flush;
+                                break;
                                 
                         }
                     }
