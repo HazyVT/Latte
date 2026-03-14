@@ -1,70 +1,24 @@
 import { useEffect, useState, useRef } from 'react'
-import { FaCaretRight } from "react-icons/fa";
+import { MdHome } from "react-icons/md";
+import { IoLibrary, IoSettingsSharp, IoPower } from "react-icons/io5";
 
 type ControllerCommand = "RIGHT" | "DOWN" | "LEFT" | "UP" | "A" | "B"
 
 function App(): React.JSX.Element {
-    const [ roms, setRoms ] = useState<string[]>([]);
-    const romsRef = useRef<string[]>([]);
-    const [ hovered, setHovered ] = useState<number>(0);
-    const hoveredRef = useRef<number>(0);
-
-    function loadGbaRom(path: string) {
-        window.electronAPI.loadGbaRom(path);
-    }
-
-    useEffect(() => {
-        hoveredRef.current = hovered;
-    }, [hovered])
-
-    useEffect(() => {
-        romsRef.current = roms;
-    }, [roms])
-            
-    useEffect(() => {
-        const getFiles = async () => {
-          const f = await window.electronAPI.readConfigDirectory()
-          console.log(f);
-        }
-        
-        window.electronAPI.onGbaRoms((value) => {
-            setRoms(value);
-        })
-        
-        window.electronAPI.onControllerInput((command: ControllerCommand) => {
-            console.log(hovered + ' : ' + hoveredRef.current);
-            switch (command) {
-                case "DOWN":
-                    if (hoveredRef.current < romsRef.current.length - 1) {
-                        setHovered((h) => h + 1);
-                    } else {
-                        setHovered(0);
-                    }
-                    break;
-                case "UP":
-                    if (hoveredRef.current > 0) {
-                        setHovered((h) => h - 1);    
-                    } else {
-                        setHovered(romsRef.current.length - 1);
-                    }
-                    break;
-                case "A":
-                    loadGbaRom(romsRef.current[hoveredRef.current]);
-                    break;
-            }
-        })
-            
-        getFiles();
-    }, [])
-
+  const [ page, setPage ] = useState('home');
+    
   return (
     <>
-        {roms.map((value, index) => {
-            return <div style={{display: 'flex', alignItems:'center', textAlign: 'left'}}>
-                <FaCaretRight style={{opacity: hovered == index ? 1 : 0}}/>
-                <a key={index} style={{color: hovered == index ? "lightblue" : "white"}}>{value}</a>
-            </div>
-        })}
+    <div className="navigation-bar-container"> 
+      <div className="navigation-bar">
+        <div className="nav-icon-container">
+          <MdHome className="nav-icon" />
+          <IoLibrary className="nav-icon" />
+          <IoSettingsSharp className="nav-icon" />
+          <IoPower className="nav-icon" />
+        </div>
+      </div>
+    </div>
     </>
   )
 }

@@ -62,6 +62,12 @@ int main() {
                             case SDL_CONTROLLER_BUTTON_B:
                                 std::cout << "B" << std::flush;
                                 break;
+                            case SDL_CONTROLLER_BUTTON_X:
+                                std::cout << "X" << std::flush;
+                                break;
+                            case SDL_CONTROLLER_BUTTON_Y:
+                                std::cout << "Y" << std::flush;
+                                break;
                             case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
                                 std::cout << "RIGHT" << std::flush;
                                 break;
@@ -77,7 +83,6 @@ int main() {
                             case SDL_CONTROLLER_BUTTON_START:
                                 std::cout << "START" << std::flush;
                                 break;
-                                
                         }
                     }
                     break;

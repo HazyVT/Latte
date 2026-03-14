@@ -27,6 +27,12 @@ function readConfigFile()  {
     const config: Config = JSON.parse(loadedConfig);
     conf = config;
     
+    // Find the steam install location using find
+    // Since steam is having issue's installing on my laptop
+    // I will hardcode the install location
+    
+    const steamInstallLocation = join(homedir(), ".steam/steam/steamapps")
+    
     // Once this is complete, scan each of the rom folders for roms
     // This location is set inside the config
     config.locations.forEach((directory) => {
