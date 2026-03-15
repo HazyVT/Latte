@@ -15,8 +15,8 @@ export function createWindow() {
     const { width, height } = primaryDisplay.workAreaSize
     
       window = new BrowserWindow({
-            width: width,
-            height: height,
+            width: 1280,
+            height: 800,
             show: false,
             autoHideMenuBar: true,
             resizable: false,

@@ -83,6 +83,12 @@ int main() {
                             case SDL_CONTROLLER_BUTTON_START:
                                 std::cout << "START" << std::flush;
                                 break;
+                            case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+                                std::cout << "L1" << std::flush;
+                                break;
+                            case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+                                std::cout << "R1" << std::flush;
+                                break;
                         }
                     }
                     break;
