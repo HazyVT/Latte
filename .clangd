@@ -1,2 +1,0 @@
-compileFlags:
-  Add: [-I/usr/local/include]
